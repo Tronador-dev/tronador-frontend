@@ -7,7 +7,7 @@ import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'node_modules'] },
   {
     extends: [
       js.configs.recommended,
@@ -30,7 +30,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      'prettier/prettier': 'warn',
+      'prettier/prettier': 'error',
     },
   },
 )

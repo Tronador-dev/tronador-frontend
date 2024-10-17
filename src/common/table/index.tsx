@@ -11,8 +11,7 @@ export const Table = () => {
   /*const { data, isLoading, error } = useUsers()
   if (isLoading) return <Spin />
   if (error) return <p>Error al cargar los datos de usuarios</p>*/
-  const columns = useMemo(() => getColumns(data), [data])
-
+  const columns = useMemo(() => getColumns(data), [])
   return (
     <div
       style={{
