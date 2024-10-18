@@ -1,9 +1,9 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './screens/login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Table } from './common/table'
-import { ChakraProvider } from '@chakra-ui/react'
+import { Home } from './screens/home.tsx'
+import { MantineProvider } from '@mantine/core'
+import '@mantine/core/styles.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,16 +16,15 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <QueryClientProvider client={queryClient}>
         <Router>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Table />} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </Router>
-      </ChakraProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </MantineProvider>
   )
 }
 

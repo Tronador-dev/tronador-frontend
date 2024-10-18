@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { postFile } from '../../api/files.ts'
+import { postFile } from '../api.ts'
 
 export const useUploadFile = () => {
   const mutation = useMutation({
