@@ -3,7 +3,7 @@ import axios from 'axios'
 import { handleAxiosError } from './errorHandler.ts'
 
 const axiosInstance = axios.create({
-  baseURL: 'https://reqres.in/api',
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 5000,
 })
 
