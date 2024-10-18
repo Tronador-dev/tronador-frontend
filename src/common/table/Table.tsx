@@ -33,13 +33,13 @@ export const Table = () => {
 
   return (
     <>
-      <ScrollArea style={{borderRadius: '8px'}}>
+      <ScrollArea style={{ borderRadius: '8px' }}>
         <MTable striped highlightOnHover>
           <MTable.Thead bg="cyan">
             {table.getHeaderGroups().map((headerGroup) => (
               <MTable.Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <MTable.Th style={{color: 'white'}} key={header.id}>
+                  <MTable.Th style={{ color: 'white' }} key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
