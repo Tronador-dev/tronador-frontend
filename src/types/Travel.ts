@@ -15,7 +15,5 @@ export interface Travel {
 
 export interface TravelResponse {
   data: Travel[]
-  currentPage: number
   totalPages: number
-  pageSize: number
 }

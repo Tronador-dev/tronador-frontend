@@ -8,7 +8,7 @@ export const TableSkeleton = ({ rows }: TableSkeletonProps) => {
   return (
     <>
       {Array.from({ length: rows }).map((_, index) => (
-        <Skeleton key={index} height={40} style={{ marginBottom: 10 }} />
+        <Skeleton key={index} height={26} style={{ marginBottom: 11 }} />
       ))}
     </>
   )
