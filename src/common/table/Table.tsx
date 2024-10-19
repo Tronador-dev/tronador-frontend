@@ -3,6 +3,8 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from '@tanstack/react-table'
 import {
@@ -15,15 +17,19 @@ import {
 import useGetTravels from '../../api/hooks/getTravels.ts'
 import { TableSkeleton } from '../TableSkeleton.tsx'
 import { useMemo, useState } from 'react'
+import { SortableHeader } from './SortableHeader.tsx'
 
 export const Table = () => {
   const [pagination, setPagination] = useState({
     pageIndex: 1,
     pageSize: 10,
   })
+  const [sorting, setSorting] = useState<SortingState>([])
+
   const { data, isLoading } = useGetTravels(
     pagination.pageIndex,
     pagination.pageSize,
+    sorting,
   )
 
   const table = useReactTable({
@@ -31,10 +37,14 @@ export const Table = () => {
     data: data?.data || [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     pageCount: data?.totalPages || 1,
     manualPagination: true,
+    manualSorting: true,
+    onSortingChange: setSorting,
     state: {
       pagination,
+      sorting,
     },
   })
 
@@ -71,28 +81,14 @@ export const Table = () => {
   return (
     <>
       <ScrollArea
-        style={{ borderRadius: '8px', height: '80vh', overflowY: 'scroll' }}
+        style={{ borderRadius: '4px', height: '80vh', overflowY: 'scroll' }}
       >
         <MTable stickyHeader={true} striped highlightOnHover>
           <MTable.Thead bg="blue">
             {table.getHeaderGroups().map((headerGroup) => (
               <MTable.Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <MTable.Th
-                    style={{
-                      color: 'white',
-                      position: 'sticky',
-                      height: '45px',
-                    }}
-                    key={header.id}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </MTable.Th>
+                  <SortableHeader header={header} />
                 ))}
               </MTable.Tr>
             ))}

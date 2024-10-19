@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { TravelResponse } from '../../types/Travel.ts'
+/*import { getTravels } from '../api.ts'*/
 
 const mockedData: TravelResponse = {
   data: [
@@ -427,10 +428,20 @@ const mockedData: TravelResponse = {
   totalPages: 3,
 }
 
-const useGetTravels = (page: number, pageSize: number) => {
+type SortingState = { id: string; desc: boolean }
+
+const useGetTravels = (
+  page: number,
+  pageSize: number,
+  sorting: SortingState[],
+) => {
+  /*const sortBy = sorting?.length > 0 ? sorting[0].id : undefined
+  const sortOrder =
+    sorting?.length > 0 ? (sorting[0].desc ? 'desc' : 'asc') : undefined*/
+
   return useQuery<TravelResponse, Error>({
-    queryKey: ['travels', page, pageSize],
-    /*queryFn: () => getTravels(page, pageSize),*/
+    queryKey: ['travels', page, pageSize, sorting],
+    /*queryFn: () => getTravels(page, pageSize, { sortBy, sortOrder }),*/
     queryFn: () =>
       new Promise((resolve) => {
         setTimeout(() => {
