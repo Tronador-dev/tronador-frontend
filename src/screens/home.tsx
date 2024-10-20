@@ -4,6 +4,7 @@ import { useState } from 'react'
 import FileUploadModal from '../common/FileUploadModal.tsx'
 import { IconUpload, IconFilter } from '@tabler/icons-react'
 import { FilterDrawer } from '../common/FilterDrawer.tsx'
+import { DataDownloadButton } from '../common/DownloadDataButton.tsx'
 
 export const Home = () => {
   const [openedModal, setOpenedModal] = useState(false)
@@ -13,6 +14,7 @@ export const Home = () => {
     <Box py="lg" px="xl" style={{ height: '100vh' }}>
       <Group justify="flex-end">
         <Group gap={'md'}>
+          <DataDownloadButton type={'excel'} />
           <Button
             onClick={() => setOpenedModal(true)}
             variant="outline"

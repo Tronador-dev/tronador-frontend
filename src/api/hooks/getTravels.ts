@@ -452,7 +452,20 @@ const useGetTravels = (
           resolve(paginatedMockedData)
         }, 2500)
       }),
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
   })
 }
 export default useGetTravels
+
+export const useGetAllTravels = () => {
+  return useQuery<TravelResponse, Error>({
+    queryKey: ['travels'],
+    queryFn: () =>
+      new Promise<TravelResponse>((resolve) => {
+        setTimeout(() => {
+          resolve(mockedData)
+        }, 2500)
+      }),
+    // staleTime: 5 * 60 * 1000, // 5 minutes stale time
+  })
+}
