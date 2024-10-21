@@ -1,10 +1,22 @@
 import { useState } from 'react'
-import { Button, Modal, Group, Text, rem, Pill } from '@mantine/core'
+import { Button, Modal, Group, Text, rem, Pill, Loader } from '@mantine/core'
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react'
 import '@mantine/dropzone/styles.css'
 
-export const FileUploadModal = ({ opened, onClose, onConfirm }) => {
+interface FileUploadModalProps {
+  opened: boolean
+  onClose: () => void
+  onConfirm: (file: FileWithPath) => void
+  isLoading: boolean
+}
+
+export const FileUploadModal = ({
+  opened,
+  onClose,
+  onConfirm,
+  isLoading,
+}: FileUploadModalProps) => {
   const [file, setFile] = useState<FileWithPath | null>(null)
 
   const handleFileUpload = (files: FileWithPath[]) => {
@@ -12,9 +24,7 @@ export const FileUploadModal = ({ opened, onClose, onConfirm }) => {
   }
 
   const handleConfirm = () => {
-    if (file) {
-      onConfirm(file)
-    }
+    if (file) onConfirm(file)
     setFile(null)
     onClose()
   }
@@ -91,8 +101,8 @@ export const FileUploadModal = ({ opened, onClose, onConfirm }) => {
         <Button variant="default" onClick={handleCancel}>
           Cancelar
         </Button>
-        <Button onClick={handleConfirm} disabled={!file}>
-          Confirmar
+        <Button onClick={handleConfirm} disabled={!file || isLoading}>
+          {isLoading ? <Loader /> : 'Confirmar'}
         </Button>
       </Group>
     </Modal>

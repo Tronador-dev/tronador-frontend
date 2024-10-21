@@ -1,20 +1,20 @@
 import { useGetAllTravels } from '../api/hooks/getTravels.ts'
-import { downloadExcel } from '../api/hooks/downloadData.ts'
 import { Button, Loader } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 
 export const DataDownloadButton = () => {
-  const { data, isLoading, isError } = useGetAllTravels()
+  const { isLoading, isError } = useGetAllTravels()
 
   // Function to trigger download
   const handleDownload = () => {
-    if (!data) return // Prevent download if no data
+    /*if (!data) return // Prevent download if no data
     downloadExcel(data.data) // Pass the data array to Excel download
-  }
+  }*/
 
-  if (isError) {
-    // TODO: Avisale que algo fallo y que no puede descargar
-    console.log('Error downloading data')
+    if (isError) {
+      // TODO: Avisale que algo fallo y que no puede descargar
+      console.log('Error downloading data')
+    }
   }
 
   return (

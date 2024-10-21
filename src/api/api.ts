@@ -1,15 +1,11 @@
 import axiosInstance from './axiosInstance.ts'
 import { TravelResponse } from '../types/Travel.ts'
+import { SortingState } from '../types/Travel.ts'
 
-export const postFile = async (file: File) => {
+export const uploadFile = async (file: File) => {
   const formData = new FormData()
   formData.append('file', file)
   return await axiosInstance.post('/upload', file)
-}
-
-type SortingState = {
-  sortBy: string | undefined
-  sortOrder: 'asc' | 'desc' | undefined
 }
 
 export const getTravels = async (
@@ -30,8 +26,13 @@ export const getTravels = async (
     params.sortBy = sort.sortBy
     params.sortOrder = sort.sortOrder
   }
-  const response = await axiosInstance.get<TravelResponse>('/travels', {
+  const response = await axiosInstance.get<TravelResponse>('/viajes', {
     params,
   })
+  return response.data
+}
+
+export const getAllTravels = async (): Promise<TravelResponse> => {
+  const response = await axiosInstance.get<TravelResponse>('/viajes')
   return response.data
 }

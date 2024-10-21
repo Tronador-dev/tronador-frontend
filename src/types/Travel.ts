@@ -1,19 +1,24 @@
 export interface Travel {
-  CP: string
-  RazonSocial: string
-  Cliente: string
-  Estado: string
-  Documentacion: string
-  Chofer: string
-  Carga: string
-  Fecha: string
-  Patente: string
-  Filial: string
-  Destino: string
-  Proveedor: string
+  cp: string
+  estado: string
+  urlDocumentacion: string
+  chofer: string
+  descripcion: string
+  fechaInicio: string
+  patente: string
+  razonSocial: string
+  destino: string
+  proveedor: string
 }
 
 export interface TravelResponse {
-  data: Travel[]
+  content: Travel[]
+  size: number
+  number: number
   totalPages: number
+}
+
+export type SortingState = {
+  sortBy: string | undefined
+  sortOrder: 'asc' | 'desc' | undefined
 }

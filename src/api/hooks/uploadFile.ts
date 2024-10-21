@@ -1,17 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
-import { postFile } from '../api.ts'
+import { uploadFile } from '../api.ts'
 
-export const useUploadFile = () => {
+interface UploadFileProps {
+  onSuccess: (data: object) => void
+  onError: (error: string) => void
+}
+
+export const useUploadFile = ({ onSuccess, onError }: UploadFileProps) => {
   const mutation = useMutation({
-    mutationFn: postFile,
-    onSuccess: () => {},
-    onError: () => {},
+    mutationFn: uploadFile,
+    onSuccess: onSuccess,
+    onError: onError,
   })
 
-  const uploadFile = (file: File) => {
+  const upload = (file: File) => {
     mutation.mutate(file)
   }
 
-  return { uploadFile, isUploading: mutation.isPending }
+  return { upload, isUploading: mutation.isPending }
 }
 export default useUploadFile

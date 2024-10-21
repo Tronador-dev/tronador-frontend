@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from '@tanstack/react-table'
 import {
@@ -16,40 +15,42 @@ import {
 } from '@mantine/core'
 import useGetTravels from '../../api/hooks/getTravels.ts'
 import { TableSkeleton } from '../TableSkeleton.tsx'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { SortableHeader } from './SortableHeader.tsx'
 
 export const Table = () => {
-  const [pagination, setPagination] = useState({
-    pageIndex: 1,
-    pageSize: 10,
-  })
-  const [sorting, setSorting] = useState<SortingState>([])
-
-  const { data, isLoading } = useGetTravels(
-    pagination.pageIndex,
-    pagination.pageSize,
+  const {
+    data,
+    isLoading,
+    page,
+    pageSize,
     sorting,
-  )
+    setPageIndex,
+    setPageSizeAndResetPage,
+    updateSorting,
+  } = useGetTravels()
 
   const table = useReactTable({
     columns,
-    data: data?.data || [],
+    data: data?.content || [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     pageCount: data?.totalPages || 1,
     manualPagination: true,
     manualSorting: true,
-    onSortingChange: setSorting,
+    onSortingChange: updateSorting,
     state: {
-      pagination,
+      pagination: {
+        pageIndex: page,
+        pageSize,
+      },
       sorting,
     },
   })
 
   const buildSelectOptions = useMemo(() => {
-    const totalRecords = pagination.pageSize * (data?.totalPages || 1)
+    const totalRecords = pageSize * (data?.totalPages || 1)
     const options = [5, 10, 20, 50, 100]
     return options
       .filter((option) => option <= totalRecords || totalRecords === 0)
@@ -57,22 +58,7 @@ export const Table = () => {
         value: option.toString(),
         label: option.toString(),
       }))
-  }, [data?.totalPages, pagination.pageSize])
-
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({ ...prev, pageIndex: page }))
-  }
-
-  const handlePageSizeChange = (value: string | null) => {
-    if (value) {
-      const size = Number(value)
-      setPagination((prev) => ({
-        ...prev,
-        pageSize: size,
-        pageIndex: 1,
-      }))
-    }
-  }
+  }, [data, pageSize])
 
   if (isLoading) {
     return <TableSkeleton rows={10} />
@@ -108,16 +94,16 @@ export const Table = () => {
       </ScrollArea>
       <Group gap="md" mt="sm" mb="sm" justify="flex-end">
         <Pagination
-          value={pagination.pageIndex}
-          onChange={handlePageChange}
+          value={page + 1}
+          onChange={setPageIndex}
           total={data?.totalPages || 1}
           withEdges
         />
         <Select
           withCheckIcon={false}
           inputSize="50px"
-          value={pagination.pageSize.toString() || '10'}
-          onChange={handlePageSizeChange}
+          value={pageSize.toString()}
+          onChange={(value) => setPageSizeAndResetPage(Number(value))}
           data={buildSelectOptions}
           style={{ width: '80px' }}
         />
